@@ -12,11 +12,7 @@ kubectl version
 helm repo add banzaicloud-stable https://kubernetes-charts.banzaicloud.com
 
 
-
-
-
 kubectl get secret ecr-credentials-output
-
 
 
 # aws-ci-demo
@@ -44,72 +40,72 @@ From your Terminal; launch the following commands:
 #### Install `brew`:
 Mac OS:
 ```
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 #### Install tools (requires `brew`):
 Install [`'awscli', 'eksctl', 'kubectl', 'terraform', 'helm', 'skaffold'`] by running:
 ```
-  brew bundle --verbose
+brew bundle --verbose
 ```
 
 #### Initialise `aws`:
 Assuming you've configured an aws profile with an associated `administrator ` role policy:
 ```
-  aws configure
+aws configure
 ```
 
 Create TF service account, generate a key for it and save key location as an `env var`:
 ```
-  Initialise service/cluster role binding
+Initialise service/cluster role binding
 ```
 
 (Initialise bucket in code)Create a bucket for TF state and initialise it:
 ```
-  add code to create this
+add code to create this
 ```
 
 #### Initialise Terraform AWS vars:
 ```
-  export TF_VAR_project="$(gcloud config list --format 'value(core.project)')"
-  export TF_VAR_region="europe-west2"
+export TF_VAR_project="$(gcloud config list --format 'value(core.project)')"
+export TF_VAR_region="europe-west2"
 ```
 **Note:** Verify the vars by running:
 ```
-  echo TF_VAR_region=$TF_VAR_region&&echo TF_VAR_project=$TF_VAR_project
+echo TF_VAR_region=$TF_VAR_region&&echo TF_VAR_project=$TF_VAR_project
 ```
 
 Also, enter your `aws_project_id` and `aws_location` in the `/terraform.tfvars` file.
 
 Now specify an administrative account `user=admin` and set a random password:
 ```
-  export TF_VAR_user="admin"
-  export TF_VAR_password="m8XBWryuWEJ238ew"
+export TF_VAR_user="admin"
+export TF_VAR_password="m8XBWryuWEJ238ew"
 ```
 
 ## Initialise and create:
 ```
-  terraform init
-  terraform plan
+terraform init
+terraform plan
 ```
 Once happy with the above plan output; apply the change using:
 ```
-  terraform apply
+terraform apply
 ```
-Once the GKE cluster is up; authenticate and connect to your cluster via `kubectl` and deploy your code using:
+Once `terraform` creates the EKS cluster successfully; connect to your cluster via `kubectl` (run `export KUBECONFIG="$PWD/kubeconfig*"`) and deploy your code using:
 ```
-  skaffold run (or 'skaffold dev' if you want to see code changes deployed immediately)
+skaffold run (or 'skaffold dev' if you want to see code changes deployed immediately)
 ```
 
 ## Test web and db deployments:
 Start by port forwarding traffic from `flask-service` to your terminal via:
 ```
-  kubectl port-forward svc/flask-service 80:8080
+kubectl port-forward svc/flask-service 80:8080
 ```
 Now to test the `flask` web service; run:
 ```
-  curl localhost:8080/test
+curl localhost:8080/test
 ```
 To test the `postgres` db; run:
 ```
-  curl localhost:8080/test_db
+curl localhost:8080/test_db
 ```
