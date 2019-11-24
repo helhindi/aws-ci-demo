@@ -1,0 +1,8 @@
+tap 'weaveworks/tap'
+
+brew 'awscli'
+brew 'weaveworks/tap/eksctl'
+brew 'terraform'
+brew 'kubectl'
+brew 'helm'
+brew 'skaffold'

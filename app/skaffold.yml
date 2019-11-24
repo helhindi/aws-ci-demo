@@ -1,0 +1,9 @@
+apiVersion: skaffold/v1beta17
+kind: Config
+build:
+  artifacts:
+  - image: eu.gcr.io/gke-sample-258119/flask-pg-app
+deploy:
+  kubectl:
+    manifests:
+      - deployment.yml
